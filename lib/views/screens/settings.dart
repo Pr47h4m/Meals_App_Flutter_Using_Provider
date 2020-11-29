@@ -53,28 +53,28 @@ class _SettingsState extends State<Settings> {
       ),
       body: ListView(
         children: [
-          SwitchListTile(
+          SwitchListTile.adaptive(
             activeColor: Theme.of(context).colorScheme.primary,
             title: Text("Show Gluten Free Meals"),
             subtitle: Text("Meal Which Does Not Contains Gluten"),
             value: isGlutenFree,
             onChanged: (value) => setState(() => isGlutenFree = value),
           ),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             activeColor: Theme.of(context).colorScheme.primary,
             title: Text("Show Vegan Meals"),
             subtitle: Text("Meal Which is Vegan"),
             value: isVegan,
             onChanged: (value) => setState(() => isVegan = value),
           ),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             activeColor: Theme.of(context).colorScheme.primary,
             title: Text("Show Vegetarian Meals"),
             subtitle: Text("Meal Which is Vegetarian"),
             value: isVegetarian,
             onChanged: (value) => setState(() => isVegetarian = value),
           ),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             activeColor: Theme.of(context).colorScheme.primary,
             title: Text("Show Lactose Free Meals"),
             subtitle: Text("Meal Which Does Not Contains Lactose"),

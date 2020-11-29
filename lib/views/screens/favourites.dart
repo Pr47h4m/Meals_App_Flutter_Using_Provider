@@ -7,22 +7,25 @@ import 'package:provider/provider.dart';
 class Favourites extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final favouriteMeals =
+        Provider.of<MealProvider>(context, listen: false).favourites;
     print("Build(\"Favourites\")");
-    return Consumer<MealProvider>(
-      builder: (context, mealProvider, child) => ListView.builder(
-        itemCount: mealProvider.favourites.length,
-        itemBuilder: (context, index) => InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, MealDetails.routeName, arguments: {
-              "mealId": mealProvider.favourites[index].id,
-              "mealTitle": mealProvider.favourites[index].title
-            });
-          },
-          borderRadius: BorderRadius.circular(10),
-          child: MealCard(
-            meal: mealProvider.favourites[index],
-          ),
-        ),
+    return ListView.builder(
+      itemCount: favouriteMeals.length,
+      itemBuilder: (context, index) => InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider.value(
+                value: favouriteMeals[index],
+                child: MealDetails(),
+              ),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(10),
+        child: MealCard(meal: favouriteMeals[index]),
       ),
     );
   }

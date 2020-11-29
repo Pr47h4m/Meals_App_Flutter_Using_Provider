@@ -1,36 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:meals/provider/meal.dart';
 import 'package:meals/provider/meal_provider.dart';
 import 'package:meals/views/components/meal_card.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class MealDetails extends StatefulWidget {
-  static const routeName = "/meal-details";
-  @override
-  _MealDetailsState createState() => _MealDetailsState();
-}
-
-class _MealDetailsState extends State<MealDetails> {
-  Map<String, String> routeArguments;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class MealDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("Build(\"Meal_Details\")");
-    routeArguments = ModalRoute.of(context).settings.arguments;
+    Meal meal = Provider.of<Meal>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text(routeArguments['mealTitle']),
+        title: Text(meal.title),
       ),
       body: Consumer<MealProvider>(
         builder: (context, mealProvider, child) => ListView(
           children: [
             MealCard(
-              meal: mealProvider.getMealById(routeArguments['mealId']),
+              meal: mealProvider.getMealById(meal.id),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -49,17 +37,12 @@ class _MealDetailsState extends State<MealDetails> {
               padding: const EdgeInsets.all(8),
               margin: const EdgeInsets.all(8),
               child: ListView.builder(
-                itemCount: mealProvider
-                    .getMealById(routeArguments['mealId'])
-                    .ingredients
-                    .length,
+                itemCount: mealProvider.getMealById(meal.id).ingredients.length,
                 itemBuilder: (context, index) => Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      mealProvider
-                          .getMealById(routeArguments['mealId'])
-                          .ingredients[index],
+                      mealProvider.getMealById(meal.id).ingredients[index],
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                             color: Colors.white,
                           ),
@@ -86,17 +69,12 @@ class _MealDetailsState extends State<MealDetails> {
               padding: const EdgeInsets.all(8),
               margin: const EdgeInsets.all(8),
               child: ListView.builder(
-                itemCount: mealProvider
-                    .getMealById(routeArguments['mealId'])
-                    .steps
-                    .length,
+                itemCount: mealProvider.getMealById(meal.id).steps.length,
                 itemBuilder: (context, index) => Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      mealProvider
-                          .getMealById(routeArguments['mealId'])
-                          .steps[index],
+                      mealProvider.getMealById(meal.id).steps[index],
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                             color: Colors.white,
                           ),
@@ -112,45 +90,14 @@ class _MealDetailsState extends State<MealDetails> {
           ],
         ),
       ),
-      floatingActionButton: FAB(routeArguments: routeArguments),
-    );
-  }
-}
-
-class FAB extends StatefulWidget {
-  const FAB({
-    Key key,
-    @required this.routeArguments,
-  }) : super(key: key);
-
-  final Map<String, String> routeArguments;
-
-  @override
-  _FABState createState() => _FABState();
-}
-
-class _FABState extends State<FAB> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<MealProvider>(
-      builder: (context, mealProvider, _) => FloatingActionButton(
-        child: Icon(Provider.of<MealProvider>(context, listen: false)
-                .isMealFavourite(widget.routeArguments['mealId'])
-            ? Icons.star
-            : Icons.star_border),
-        onPressed: () {
-          !Provider.of<MealProvider>(context, listen: false)
-                  .isMealFavourite(widget.routeArguments['mealId'])
-              ? Provider.of<MealProvider>(context, listen: false)
-                  .addMealToFavourite(widget.routeArguments["mealId"])
-              : Provider.of<MealProvider>(context, listen: false)
-                  .removeMealFromFavourite(widget.routeArguments["mealId"]);
-        },
+      floatingActionButton: Consumer<Meal>(
+        builder: (context, meal, child) => FloatingActionButton(
+          child:
+              Icon(meal.isFavourite ? Icons.favorite : Icons.favorite_border),
+          onPressed: () {
+            meal.toggleFavourite();
+          },
+        ),
       ),
     );
   }

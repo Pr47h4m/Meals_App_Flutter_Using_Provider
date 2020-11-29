@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:meals/models/meal.dart';
+import 'package:meals/provider/meal.dart';
+import 'package:meals/views/screens/favourites.dart';
 
 class MealProvider with ChangeNotifier {
-  List<Meal> meals = const [
+  List<Meal> meals = [
     Meal(
       id: 'm1',
       categories: [
@@ -360,7 +361,9 @@ class MealProvider with ChangeNotifier {
   };
   List<Meal> filteredMeals = [];
   List<Meal> displayMeals = [];
-  List<Meal> favourites = [];
+
+  List<Meal> get favourites =>
+      displayMeals.where((meal) => meal.isFavourite == true).toList();
 
   void diaplayMealsByCategory(category) {
     displayMeals = [];
@@ -376,22 +379,6 @@ class MealProvider with ChangeNotifier {
   }
 
   Meal getMealById(mealId) => meals.firstWhere((meal) => meal.id == mealId);
-
-  void addMealToFavourite(mealId) {
-    favourites.add(meals.firstWhere((meal) => meal.id == mealId));
-    notifyListeners();
-  }
-
-  void removeMealFromFavourite(mealId) {
-    try {
-      favourites.removeAt(
-          favourites.indexWhere((favouriteMeal) => favouriteMeal.id == mealId));
-      notifyListeners();
-    } catch (e) {}
-  }
-
-  bool isMealFavourite(mealId) =>
-      favourites.contains(meals.firstWhere((meal) => meal.id == mealId));
 
   void saveFilters(filters) {
     this.filters = filters;

@@ -35,10 +35,13 @@ class _MealsState extends State<Meals> {
           itemCount: mealProvider.displayMeals.length,
           itemBuilder: (context, index) => InkWell(
             onTap: () {
-              Navigator.pushNamed(context, MealDetails.routeName, arguments: {
-                "mealId": mealProvider.displayMeals[index].id,
-                "mealTitle": mealProvider.displayMeals[index].title
-              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider.value(
+                        value: mealProvider.displayMeals[index],
+                        child: MealDetails()),
+                  ));
             },
             borderRadius: BorderRadius.circular(10),
             child: MealCard(

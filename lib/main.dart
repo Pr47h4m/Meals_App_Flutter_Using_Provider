@@ -38,7 +38,6 @@ class FlutterGeneral extends StatelessWidget {
           routes: {
             '/': (context) => Home(),
             Meals.routeName: (context) => Meals(),
-            MealDetails.routeName: (context) => MealDetails(),
             Settings.routeName: (context) => Settings(),
           },
           onUnknownRoute: (settings) {

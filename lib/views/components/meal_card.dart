@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:meals/models/meal.dart';
+import 'package:meals/provider/meal.dart';
 
 class MealCard extends StatelessWidget {
   final Meal meal;

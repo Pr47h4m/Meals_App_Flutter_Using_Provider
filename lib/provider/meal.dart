@@ -3,15 +3,15 @@ import 'package:flutter/foundation.dart';
 enum Affordability { Affordable, Pricey, Luxurious }
 enum Complexity { Simple, Challenging, Hard }
 
-class Meal {
+class Meal with ChangeNotifier {
   final String id, title, imageUrl;
   final double duration;
   final Affordability affordability;
   final Complexity complexity;
   final List categories, ingredients, steps;
   final bool isGlutenFree, isVegan, isVegetarian, isLactoseFree;
-
-  const Meal({
+  bool isFavourite;
+  Meal({
     this.isGlutenFree,
     this.isVegan,
     this.isVegetarian,
@@ -25,6 +25,7 @@ class Meal {
     this.duration,
     this.categories,
     this.affordability,
+    this.isFavourite = false,
   });
 
   String get getComplexity {
@@ -41,5 +42,10 @@ class Meal {
         : this.affordability == Affordability.Pricey
             ? "Pricey"
             : "Luxurious";
+  }
+
+  void toggleFavourite() {
+    isFavourite = !isFavourite;
+    notifyListeners();
   }
 }
